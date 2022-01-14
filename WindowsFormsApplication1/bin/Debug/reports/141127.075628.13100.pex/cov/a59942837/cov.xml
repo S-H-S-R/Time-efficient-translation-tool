@@ -1,0 +1,3167 @@
+﻿<documents created="2014-11-27 15:57:01Z"><document src="D:\WINDOWS 2012\BACK up 11\easy tranlate\easy translator\better gui\WindowsFormsApplication1\Form1.cs" renderPrefix="s0"><chunk hits="-1" domain="unknown"><source><![CDATA[using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+//if (e.KeyData ==  Keys.OemQuestion)    ??????/
+                
+
+
+//farsi be english chi va link jomalat.
+//jomle akhar nabaye "." dashte bashad chon yek empty ezafe mikone akharesh split();
+//chon yek jomle ra nashe dar yek jomle kamel tarjome kard. vali ma felan yek be yak cople darim faghat
+//eshkal:yek jomle ra mishe chand bar mark as problem kard
+namespace WindowsFormsApplication1
+{
+    public partial class Form1 : Form
+    {
+
+       
+
+        ]]></source>
+</chunk>
+<chunk hits="2" offset="0012" domain="usercodeundertest"><source><![CDATA[public Form1()]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+        ]]></source>
+</chunk>
+<chunk hits="1" offset="0019" domain="usercodeundertest"><source><![CDATA[{]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="1" offset="001a" domain="usercodeundertest"><source><![CDATA[InitializeComponent();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+        ]]></source>
+</chunk>
+<chunk hits="0" offset="0021" domain="usercodeundertest"><source><![CDATA[}]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+
+        //-----------------------------------------------------
+        ]]></source>
+</chunk>
+<method name=".ctor" namespace="WindowsFormsApplication1" type="WindowsFormsApplication1.Form1" typeName="Form1" token="6000005" module="WindowsFormsApplication1.exe"><hits><hit index="0" value="1"/>
+<hit index="1" value="1"/>
+<hit index="3" value="1"/>
+<hit index="4" value="1"/>
+<hit index="5" value="1"/>
+<hit index="6" value="1"/>
+<hit index="7" value="1"/>
+<hit index="8" value="1"/>
+<hit index="9" value="1"/>
+<hit index="10" value="1"/>
+</hits>
+<coverage domain="usercodeundertest" unit="block" covered="3" total="4" coveredRatio="0.75"/>
+</method>
+<chunk hits="1" offset="0000" domain="usercodeundertest"><source><![CDATA[map mymap = new map();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+        //-----------------------------------------------------
+        [Serializable]
+        class Couple_Sentance {//chera struct nemishe????/
+
+               public string Farsi;
+               public string English;
+            
+            }
+        
+        //-----------------------------------------------------
+        [Serializable]
+        class map {
+
+           
+           ]]></source>
+</chunk>
+<method name=".ctor" namespace="WindowsFormsApplication1" type="WindowsFormsApplication1.Form1+map" typeName="Form1+map" token="600001d" module="WindowsFormsApplication1.exe"><hits><hit index="0" value="1"/>
+<hit index="1" value="1"/>
+<hit index="3" value="1"/>
+<hit index="4" value="1"/>
+<hit index="5" value="1"/>
+<hit index="6" value="1"/>
+<hit index="7" value="1"/>
+<hit index="8" value="1"/>
+<hit index="10" value="1"/>
+<hit index="11" value="1"/>
+<hit index="12" value="1"/>
+<hit index="13" value="1"/>
+<hit index="14" value="1"/>
+</hits>
+<coverage domain="usercodeundertest" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<chunk hits="1" offset="0000" domain="usercodeundertest"><source><![CDATA[public List<Couple_Sentance> CouplesList = new List<Couple_Sentance>();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+           ]]></source>
+</chunk>
+<chunk hits="2" offset="000b" domain="usercodeundertest"><source><![CDATA[public int CurrentCoupleIndex = 0;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[//zero based
+           ]]></source>
+</chunk>
+<chunk hits="2" offset="0012" domain="usercodeundertest"><source><![CDATA[public List<int> problem_indexes = new List<int>();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[  
+           public void break2sentences(string textcontent)
+           {//and add couples to list
+
+
+
+               //hazfe akharin . age dasht
+               if (textcontent != "")
+               {
+                   if (textcontent[textcontent.Length - 1] == '.')//if akharish . bood//chon split() baad "." ra ham ozv mide! 
+                   {
+                       int lastindex = textcontent.Length - 1;//last . index
+                       textcontent = textcontent.Remove(lastindex);
+                   }
+               }
+
+
+
+
+               if (textcontent == "")
+               { //chon split() empty ra ham ozv mide!           
+                   MessageBox.Show("No input");
+                   return;
+               }
+
+               //vali "....." filter nemishe  vali "." filter mishe
+               //-------------------------------------------------------
+
+
+
+
+            string[] allsen = textcontent.Split(".".ToCharArray());
+            foreach (string s in allsen)
+            {   
+               Couple_Sentance temp=new Couple_Sentance();
+               temp.English=s;
+               temp.Farsi="";
+
+               CouplesList.Add(temp);
+            }
+           
+           }
+
+            
+            public bool MarkCurrentAsProblem() {
+                //sets current couple as problem
+                //it saves real cuple index into problem list
+
+                //chek if was not problem before, prefvent duplicates
+                for (int i = 0; i < problem_indexes.Count; i++)
+                {
+                    if (problem_indexes[i] == CurrentCoupleIndex)
+                    {
+                        return false;
+                    }
+                }
+
+                
+
+                problem_indexes.Add(CurrentCoupleIndex);
+                return true;
+            
+            }
+
+            public void RemoveCurrentProblem()
+            {   //make it normal if current sentence index is in problem list
+
+                for (int i = 0; i < problem_indexes.Count; i++)
+                {
+                    if (problem_indexes[i] == CurrentCoupleIndex)
+                    {
+                        problem_indexes.RemoveAt(i);
+                    }
+                }
+            }
+            
+           
+            public Couple_Sentance Jump_to_Couple(int destination_index)
+            {
+
+                if (destination_index < CouplesList.Count() && destination_index > -1)
+                {
+                    CurrentCoupleIndex=destination_index;
+                    return CouplesList[destination_index];
+                }
+                else
+                {
+                    MessageBox.Show("No such index");
+                    return null;
+                }
+
+
+
+            
+            }
+
+            public Couple_Sentance NextCouple()
+            {
+
+                if (CurrentCoupleIndex < CouplesList.Count() - 1)
+                {
+                    this.CurrentCoupleIndex++;
+                    return CouplesList[CurrentCoupleIndex];
+                }
+                else
+                {
+                    MessageBox.Show("No next sentence");
+                    return null;
+                }
+            }
+
+            public Couple_Sentance BeforeCouple()
+            {
+
+
+                if (CurrentCoupleIndex > 0)
+                {
+                    this.CurrentCoupleIndex--;
+                    return CouplesList[CurrentCoupleIndex];
+                }
+                else
+                {
+                    MessageBox.Show("No last sentence");
+                    return null;
+                          
+                }
+            }
+
+            public Couple_Sentance Current_Sentance()
+           {
+                return CouplesList[CurrentCoupleIndex];                     
+           
+           
+           }
+                       
+            
+            public void Save_Couple(string farsi) { //saves changes to farsi section of current section 
+
+                CouplesList[CurrentCoupleIndex].Farsi = farsi;
+            
+            }
+        }
+
+        //-----------------------------------------------------
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+            if (File.Exists("data.bin"))
+            {
+
+                BinaryFormatter binFormat = new BinaryFormatter();
+
+                using (Stream fStream = File.OpenRead("data.bin"))
+                {
+                    mymap = (map)binFormat.Deserialize(fStream);
+
+                    for(int i=0;i<mymap.problem_indexes.Count;i++){
+                      this.listBox1.Items.Add(mymap.CouplesList[mymap.problem_indexes[i]].English);
+                    }
+
+                    richTextBox1.Text = mymap.Current_Sentance().English;
+                    richTextBox2.Text = mymap.Current_Sentance().Farsi;
+                }
+            }
+           
+        }
+               
+        private void button1_Click(object sender, EventArgs e)
+        {
+            mymap.NextCouple();
+            richTextBox1.Text = mymap.Current_Sentance().English;
+            richTextBox2.Text = mymap.Current_Sentance().Farsi;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            mymap.BeforeCouple();
+            richTextBox1.Text = mymap.Current_Sentance().English;
+            richTextBox2.Text = mymap.Current_Sentance().Farsi;
+        }
+
+        private void button3_Click(object sender, EventArgs e)  {
+            mymap = null;//lazeme????
+            mymap = new map();
+            
+            mymap.break2sentences(richTextBox1.Text);
+            richTextBox1.Text = mymap.Current_Sentance().English;
+
+            listBox1.Items.Clear();
+            richTextBox2.Text = "";
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+          mymap.Save_Couple(richTextBox2.Text);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            
+            string final_result="";
+            foreach(Couple_Sentance sen in mymap.CouplesList)
+              final_result+=sen.Farsi;
+
+            Clipboard.SetText(final_result);
+
+        }
+
+       
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if(mymap.MarkCurrentAsProblem())
+            listBox1.Items.Add(mymap.Current_Sentance().English);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            mymap.RemoveCurrentProblem();
+
+            //update listbox by reading again from problem list
+            listBox1.Items.Clear();
+            foreach (int i in mymap.problem_indexes) {             
+                 listBox1.Items.Add( mymap.CouplesList[i].English);
+            }
+
+        }
+
+        private void listBox1_Click(object sender, EventArgs e)
+        {
+            if ( listBox1.SelectedIndex < 0)
+                return;
+
+
+            //* listboxx seleted index is of listbox items  not real sentence index in problem_indexes, so it is converted to real senence index
+
+            //make real index
+            int real_index = mymap.problem_indexes[listBox1.SelectedIndex];
+
+            //jump to it current, makes it current sentence
+            mymap.Jump_to_Couple(real_index);
+
+            //
+            richTextBox1.Text = mymap.Current_Sentance().English;
+            richTextBox2.Text = mymap.Current_Sentance().Farsi;
+
+
+
+
+            //BinaryFormatter binFormat = new BinaryFormatter();
+
+            //using (Stream fStream = File.OpenRead("graph.bin"))
+            //{
+            //    Graph temp = (Graph)binFormat.Deserialize(fStream);
+               
+            //}
+
+
+
+
+
+
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            BinaryFormatter binFormat = new BinaryFormatter();
+            // Store object in a local file.
+            using (Stream fStream = new FileStream("data.bin", FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                binFormat.Serialize(fStream, mymap);
+            }
+        }
+
+       
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            //this short cut is equal to save button+next button
+
+            if (e.KeyData == Keys.Left)
+            {
+                
+                mymap.Save_Couple(richTextBox2.Text);
+                mymap.NextCouple();
+                richTextBox1.Text = mymap.Current_Sentance().English;
+                richTextBox2.Text = mymap.Current_Sentance().Farsi;
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+       
+
+       
+     
+
+       
+
+
+
+        
+
+       
+        
+
+    
+    }
+}
+]]></source>
+</chunk>
+</document>
+<document src="D:\WINDOWS 2012\BACK up 11\easy tranlate\easy translator\better gui\WindowsFormsApplication1\Form1.Designer.cs" renderPrefix="s1"><chunk hits="-1" domain="unknown"><source><![CDATA[namespace WindowsFormsApplication1
+  
+{
+    
+    partial class Form1
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        ]]></source>
+</chunk>
+<chunk hits="2" offset="000b" domain="usercodeundertest"><source><![CDATA[private System.ComponentModel.IContainer components = null;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        ]]></source>
+</chunk>
+<method name="InitializeComponent" namespace="WindowsFormsApplication1" type="WindowsFormsApplication1.Form1" typeName="Form1" token="6000013" module="WindowsFormsApplication1.exe"><hits><hit index="0" value="1"/>
+<hit index="1" value="1"/>
+<hit index="3" value="1"/>
+<hit index="4" value="1"/>
+<hit index="5" value="1"/>
+<hit index="6" value="1"/>
+<hit index="8" value="1"/>
+<hit index="9" value="1"/>
+<hit index="10" value="1"/>
+<hit index="11" value="1"/>
+<hit index="13" value="1"/>
+<hit index="14" value="1"/>
+<hit index="15" value="1"/>
+<hit index="16" value="1"/>
+<hit index="18" value="1"/>
+<hit index="19" value="1"/>
+<hit index="20" value="1"/>
+<hit index="21" value="1"/>
+<hit index="23" value="1"/>
+<hit index="24" value="1"/>
+<hit index="25" value="1"/>
+<hit index="26" value="1"/>
+<hit index="28" value="1"/>
+<hit index="29" value="1"/>
+<hit index="30" value="1"/>
+<hit index="31" value="1"/>
+<hit index="33" value="1"/>
+<hit index="34" value="1"/>
+<hit index="35" value="1"/>
+<hit index="36" value="1"/>
+<hit index="38" value="1"/>
+<hit index="39" value="1"/>
+<hit index="40" value="1"/>
+<hit index="41" value="1"/>
+<hit index="43" value="1"/>
+<hit index="44" value="1"/>
+<hit index="45" value="1"/>
+<hit index="46" value="1"/>
+<hit index="48" value="1"/>
+<hit index="49" value="1"/>
+<hit index="50" value="1"/>
+<hit index="51" value="1"/>
+<hit index="53" value="1"/>
+<hit index="54" value="1"/>
+<hit index="55" value="1"/>
+<hit index="56" value="1"/>
+<hit index="58" value="1"/>
+<hit index="59" value="1"/>
+<hit index="60" value="1"/>
+<hit index="61" value="1"/>
+<hit index="63" value="1"/>
+<hit index="64" value="1"/>
+<hit index="65" value="1"/>
+<hit index="66" value="1"/>
+<hit index="68" value="1"/>
+<hit index="69" value="1"/>
+<hit index="70" value="1"/>
+<hit index="71" value="1"/>
+<hit index="72" value="1"/>
+<hit index="73" value="1"/>
+<hit index="74" value="1"/>
+<hit index="76" value="1"/>
+<hit index="77" value="1"/>
+<hit index="78" value="1"/>
+<hit index="79" value="1"/>
+<hit index="80" value="2"/>
+<hit index="81" value="1"/>
+<hit index="82" value="1"/>
+<hit index="83" value="1"/>
+<hit index="84" value="1"/>
+<hit index="85" value="2"/>
+<hit index="86" value="1"/>
+<hit index="87" value="1"/>
+<hit index="89" value="1"/>
+<hit index="90" value="1"/>
+<hit index="91" value="1"/>
+<hit index="92" value="1"/>
+<hit index="93" value="2"/>
+<hit index="94" value="1"/>
+<hit index="95" value="1"/>
+<hit index="96" value="1"/>
+<hit index="97" value="1"/>
+<hit index="98" value="2"/>
+<hit index="99" value="1"/>
+<hit index="100" value="1"/>
+<hit index="101" value="1"/>
+<hit index="102" value="1"/>
+<hit index="103" value="2"/>
+<hit index="104" value="1"/>
+<hit index="105" value="1"/>
+<hit index="106" value="1"/>
+<hit index="107" value="1"/>
+<hit index="108" value="2"/>
+<hit index="109" value="1"/>
+<hit index="110" value="1"/>
+<hit index="112" value="1"/>
+<hit index="113" value="1"/>
+<hit index="114" value="1"/>
+<hit index="115" value="1"/>
+<hit index="116" value="2"/>
+<hit index="117" value="1"/>
+<hit index="118" value="1"/>
+<hit index="120" value="1"/>
+<hit index="121" value="1"/>
+<hit index="122" value="1"/>
+<hit index="123" value="1"/>
+<hit index="124" value="2"/>
+<hit index="125" value="1"/>
+<hit index="126" value="1"/>
+<hit index="127" value="1"/>
+<hit index="128" value="1"/>
+<hit index="129" value="2"/>
+<hit index="130" value="1"/>
+<hit index="131" value="1"/>
+<hit index="133" value="1"/>
+<hit index="134" value="1"/>
+<hit index="135" value="1"/>
+<hit index="136" value="1"/>
+<hit index="137" value="2"/>
+<hit index="138" value="1"/>
+<hit index="139" value="1"/>
+<hit index="140" value="1"/>
+<hit index="141" value="1"/>
+<hit index="142" value="2"/>
+<hit index="143" value="1"/>
+<hit index="144" value="1"/>
+<hit index="145" value="1"/>
+<hit index="146" value="1"/>
+<hit index="147" value="2"/>
+<hit index="148" value="1"/>
+<hit index="149" value="1"/>
+<hit index="150" value="1"/>
+<hit index="151" value="1"/>
+<hit index="152" value="2"/>
+<hit index="153" value="1"/>
+<hit index="154" value="1"/>
+<hit index="156" value="1"/>
+<hit index="157" value="1"/>
+<hit index="158" value="1"/>
+<hit index="159" value="1"/>
+<hit index="160" value="2"/>
+<hit index="161" value="1"/>
+<hit index="162" value="1"/>
+<hit index="164" value="1"/>
+<hit index="165" value="1"/>
+<hit index="166" value="1"/>
+<hit index="167" value="1"/>
+<hit index="168" value="2"/>
+<hit index="169" value="1"/>
+<hit index="170" value="1"/>
+<hit index="172" value="1"/>
+<hit index="173" value="1"/>
+<hit index="174" value="1"/>
+<hit index="175" value="1"/>
+<hit index="176" value="2"/>
+<hit index="177" value="1"/>
+<hit index="178" value="1"/>
+<hit index="179" value="1"/>
+<hit index="180" value="1"/>
+<hit index="181" value="2"/>
+<hit index="182" value="1"/>
+<hit index="183" value="1"/>
+<hit index="185" value="1"/>
+<hit index="186" value="1"/>
+<hit index="187" value="1"/>
+<hit index="188" value="1"/>
+<hit index="189" value="2"/>
+<hit index="190" value="1"/>
+<hit index="191" value="1"/>
+<hit index="192" value="1"/>
+<hit index="193" value="1"/>
+<hit index="194" value="2"/>
+<hit index="195" value="1"/>
+<hit index="196" value="1"/>
+<hit index="197" value="1"/>
+<hit index="198" value="1"/>
+<hit index="199" value="2"/>
+<hit index="200" value="1"/>
+<hit index="201" value="1"/>
+<hit index="203" value="1"/>
+<hit index="204" value="1"/>
+<hit index="205" value="1"/>
+<hit index="206" value="1"/>
+<hit index="207" value="2"/>
+<hit index="208" value="1"/>
+<hit index="209" value="1"/>
+<hit index="211" value="1"/>
+<hit index="212" value="1"/>
+<hit index="213" value="1"/>
+<hit index="214" value="1"/>
+<hit index="215" value="2"/>
+<hit index="216" value="1"/>
+<hit index="217" value="1"/>
+<hit index="218" value="1"/>
+<hit index="219" value="1"/>
+<hit index="220" value="2"/>
+<hit index="221" value="1"/>
+<hit index="222" value="1"/>
+<hit index="223" value="1"/>
+<hit index="224" value="1"/>
+<hit index="225" value="2"/>
+<hit index="226" value="1"/>
+<hit index="227" value="1"/>
+<hit index="229" value="1"/>
+<hit index="230" value="1"/>
+<hit index="231" value="1"/>
+<hit index="232" value="1"/>
+<hit index="233" value="2"/>
+<hit index="234" value="1"/>
+<hit index="235" value="1"/>
+<hit index="236" value="1"/>
+<hit index="237" value="1"/>
+<hit index="238" value="2"/>
+<hit index="239" value="1"/>
+<hit index="240" value="1"/>
+<hit index="241" value="1"/>
+<hit index="242" value="1"/>
+<hit index="243" value="2"/>
+<hit index="244" value="1"/>
+<hit index="245" value="1"/>
+<hit index="247" value="1"/>
+<hit index="248" value="1"/>
+<hit index="249" value="1"/>
+<hit index="250" value="1"/>
+<hit index="251" value="2"/>
+<hit index="252" value="1"/>
+<hit index="253" value="1"/>
+<hit index="254" value="1"/>
+<hit index="255" value="1"/>
+<hit index="256" value="2"/>
+<hit index="257" value="1"/>
+<hit index="258" value="1"/>
+<hit index="260" value="1"/>
+<hit index="261" value="1"/>
+<hit index="262" value="1"/>
+<hit index="263" value="1"/>
+<hit index="264" value="2"/>
+<hit index="265" value="1"/>
+<hit index="266" value="1"/>
+<hit index="267" value="1"/>
+<hit index="268" value="1"/>
+<hit index="269" value="2"/>
+<hit index="270" value="1"/>
+<hit index="271" value="1"/>
+<hit index="272" value="1"/>
+<hit index="273" value="1"/>
+<hit index="274" value="2"/>
+<hit index="275" value="1"/>
+<hit index="276" value="1"/>
+<hit index="277" value="1"/>
+<hit index="278" value="1"/>
+<hit index="279" value="2"/>
+<hit index="280" value="1"/>
+<hit index="281" value="1"/>
+<hit index="283" value="1"/>
+<hit index="284" value="1"/>
+<hit index="285" value="1"/>
+<hit index="286" value="1"/>
+<hit index="287" value="2"/>
+<hit index="288" value="1"/>
+<hit index="289" value="1"/>
+<hit index="291" value="1"/>
+<hit index="292" value="1"/>
+<hit index="293" value="1"/>
+<hit index="294" value="1"/>
+<hit index="295" value="2"/>
+<hit index="296" value="1"/>
+<hit index="297" value="1"/>
+<hit index="298" value="1"/>
+<hit index="299" value="1"/>
+<hit index="300" value="2"/>
+<hit index="301" value="1"/>
+<hit index="302" value="1"/>
+<hit index="304" value="1"/>
+<hit index="305" value="1"/>
+<hit index="306" value="1"/>
+<hit index="307" value="1"/>
+<hit index="308" value="2"/>
+<hit index="309" value="1"/>
+<hit index="310" value="1"/>
+<hit index="311" value="1"/>
+<hit index="312" value="1"/>
+<hit index="313" value="2"/>
+<hit index="314" value="1"/>
+<hit index="315" value="1"/>
+<hit index="316" value="1"/>
+<hit index="317" value="1"/>
+<hit index="318" value="2"/>
+<hit index="319" value="1"/>
+<hit index="320" value="1"/>
+<hit index="321" value="1"/>
+<hit index="322" value="1"/>
+<hit index="323" value="2"/>
+<hit index="324" value="1"/>
+<hit index="325" value="1"/>
+<hit index="327" value="1"/>
+<hit index="328" value="1"/>
+<hit index="329" value="1"/>
+<hit index="330" value="1"/>
+<hit index="331" value="2"/>
+<hit index="332" value="1"/>
+<hit index="333" value="1"/>
+<hit index="334" value="1"/>
+<hit index="335" value="1"/>
+<hit index="336" value="2"/>
+<hit index="337" value="1"/>
+<hit index="338" value="1"/>
+<hit index="340" value="1"/>
+<hit index="341" value="1"/>
+<hit index="342" value="1"/>
+<hit index="343" value="1"/>
+<hit index="344" value="2"/>
+<hit index="345" value="1"/>
+<hit index="346" value="1"/>
+<hit index="347" value="1"/>
+<hit index="348" value="1"/>
+<hit index="349" value="2"/>
+<hit index="350" value="1"/>
+<hit index="351" value="1"/>
+<hit index="352" value="1"/>
+<hit index="353" value="1"/>
+<hit index="354" value="2"/>
+<hit index="355" value="1"/>
+<hit index="356" value="1"/>
+<hit index="357" value="1"/>
+<hit index="358" value="1"/>
+<hit index="359" value="2"/>
+<hit index="360" value="1"/>
+<hit index="361" value="1"/>
+<hit index="363" value="1"/>
+<hit index="364" value="1"/>
+<hit index="365" value="1"/>
+<hit index="366" value="1"/>
+<hit index="367" value="2"/>
+<hit index="368" value="1"/>
+<hit index="369" value="1"/>
+<hit index="371" value="1"/>
+<hit index="372" value="1"/>
+<hit index="373" value="1"/>
+<hit index="374" value="1"/>
+<hit index="375" value="2"/>
+<hit index="376" value="1"/>
+<hit index="377" value="1"/>
+<hit index="378" value="1"/>
+<hit index="379" value="1"/>
+<hit index="380" value="2"/>
+<hit index="381" value="1"/>
+<hit index="382" value="1"/>
+<hit index="384" value="1"/>
+<hit index="385" value="1"/>
+<hit index="386" value="1"/>
+<hit index="387" value="1"/>
+<hit index="388" value="2"/>
+<hit index="389" value="1"/>
+<hit index="390" value="1"/>
+<hit index="391" value="1"/>
+<hit index="392" value="1"/>
+<hit index="393" value="2"/>
+<hit index="394" value="1"/>
+<hit index="395" value="1"/>
+<hit index="396" value="1"/>
+<hit index="397" value="1"/>
+<hit index="398" value="2"/>
+<hit index="399" value="1"/>
+<hit index="400" value="1"/>
+<hit index="401" value="1"/>
+<hit index="402" value="1"/>
+<hit index="403" value="2"/>
+<hit index="404" value="1"/>
+<hit index="405" value="1"/>
+<hit index="407" value="1"/>
+<hit index="408" value="1"/>
+<hit index="409" value="1"/>
+<hit index="410" value="1"/>
+<hit index="411" value="2"/>
+<hit index="412" value="1"/>
+<hit index="413" value="1"/>
+<hit index="415" value="1"/>
+<hit index="416" value="1"/>
+<hit index="417" value="1"/>
+<hit index="418" value="1"/>
+<hit index="419" value="2"/>
+<hit index="420" value="1"/>
+<hit index="421" value="1"/>
+<hit index="422" value="1"/>
+<hit index="423" value="1"/>
+<hit index="424" value="2"/>
+<hit index="425" value="1"/>
+<hit index="426" value="1"/>
+<hit index="428" value="1"/>
+<hit index="429" value="1"/>
+<hit index="430" value="1"/>
+<hit index="431" value="1"/>
+<hit index="432" value="2"/>
+<hit index="433" value="1"/>
+<hit index="434" value="1"/>
+<hit index="435" value="1"/>
+<hit index="436" value="1"/>
+<hit index="437" value="2"/>
+<hit index="438" value="1"/>
+<hit index="439" value="1"/>
+<hit index="440" value="1"/>
+<hit index="441" value="1"/>
+<hit index="442" value="2"/>
+<hit index="443" value="1"/>
+<hit index="444" value="1"/>
+<hit index="445" value="1"/>
+<hit index="446" value="1"/>
+<hit index="447" value="2"/>
+<hit index="448" value="1"/>
+<hit index="449" value="1"/>
+<hit index="451" value="1"/>
+<hit index="452" value="1"/>
+<hit index="453" value="1"/>
+<hit index="454" value="1"/>
+<hit index="455" value="2"/>
+<hit index="456" value="1"/>
+<hit index="457" value="1"/>
+<hit index="458" value="1"/>
+<hit index="459" value="1"/>
+<hit index="460" value="2"/>
+<hit index="461" value="1"/>
+<hit index="462" value="1"/>
+<hit index="464" value="1"/>
+<hit index="465" value="1"/>
+<hit index="466" value="1"/>
+<hit index="467" value="1"/>
+<hit index="468" value="2"/>
+<hit index="469" value="1"/>
+<hit index="470" value="1"/>
+<hit index="471" value="1"/>
+<hit index="472" value="1"/>
+<hit index="473" value="2"/>
+<hit index="474" value="1"/>
+<hit index="475" value="1"/>
+<hit index="477" value="1"/>
+<hit index="478" value="1"/>
+<hit index="479" value="1"/>
+<hit index="480" value="1"/>
+<hit index="481" value="2"/>
+<hit index="482" value="1"/>
+<hit index="483" value="1"/>
+<hit index="484" value="1"/>
+<hit index="485" value="1"/>
+<hit index="486" value="2"/>
+<hit index="487" value="1"/>
+<hit index="488" value="1"/>
+<hit index="490" value="1"/>
+<hit index="491" value="1"/>
+<hit index="492" value="1"/>
+<hit index="493" value="1"/>
+<hit index="494" value="2"/>
+<hit index="495" value="1"/>
+<hit index="496" value="1"/>
+<hit index="497" value="1"/>
+<hit index="498" value="1"/>
+<hit index="499" value="2"/>
+<hit index="500" value="1"/>
+<hit index="501" value="1"/>
+<hit index="503" value="1"/>
+<hit index="504" value="1"/>
+<hit index="505" value="1"/>
+<hit index="506" value="1"/>
+<hit index="507" value="2"/>
+<hit index="508" value="1"/>
+<hit index="509" value="1"/>
+<hit index="510" value="1"/>
+<hit index="511" value="1"/>
+<hit index="512" value="2"/>
+<hit index="513" value="1"/>
+<hit index="514" value="1"/>
+<hit index="516" value="1"/>
+<hit index="517" value="1"/>
+<hit index="518" value="1"/>
+<hit index="519" value="1"/>
+<hit index="520" value="2"/>
+<hit index="521" value="1"/>
+<hit index="522" value="1"/>
+<hit index="523" value="1"/>
+<hit index="524" value="1"/>
+<hit index="525" value="2"/>
+<hit index="526" value="1"/>
+<hit index="527" value="1"/>
+<hit index="528" value="1"/>
+<hit index="529" value="1"/>
+<hit index="530" value="2"/>
+<hit index="531" value="1"/>
+<hit index="532" value="1"/>
+<hit index="534" value="1"/>
+<hit index="535" value="1"/>
+<hit index="536" value="1"/>
+<hit index="537" value="1"/>
+<hit index="538" value="2"/>
+<hit index="539" value="1"/>
+<hit index="540" value="1"/>
+<hit index="541" value="1"/>
+<hit index="542" value="1"/>
+<hit index="543" value="2"/>
+<hit index="544" value="1"/>
+<hit index="545" value="1"/>
+<hit index="547" value="1"/>
+<hit index="548" value="1"/>
+<hit index="549" value="1"/>
+<hit index="550" value="1"/>
+<hit index="551" value="2"/>
+<hit index="552" value="1"/>
+<hit index="553" value="1"/>
+<hit index="554" value="1"/>
+<hit index="555" value="1"/>
+<hit index="556" value="2"/>
+<hit index="557" value="1"/>
+<hit index="558" value="1"/>
+<hit index="559" value="1"/>
+<hit index="560" value="1"/>
+<hit index="561" value="2"/>
+<hit index="562" value="1"/>
+<hit index="563" value="1"/>
+<hit index="564" value="1"/>
+<hit index="565" value="1"/>
+<hit index="566" value="2"/>
+<hit index="567" value="1"/>
+<hit index="568" value="1"/>
+<hit index="570" value="1"/>
+<hit index="571" value="1"/>
+<hit index="572" value="1"/>
+<hit index="573" value="1"/>
+<hit index="574" value="2"/>
+<hit index="575" value="1"/>
+<hit index="576" value="1"/>
+<hit index="578" value="1"/>
+<hit index="579" value="1"/>
+<hit index="580" value="1"/>
+<hit index="581" value="1"/>
+<hit index="582" value="2"/>
+<hit index="583" value="1"/>
+<hit index="584" value="1"/>
+<hit index="585" value="1"/>
+<hit index="586" value="1"/>
+<hit index="587" value="2"/>
+<hit index="588" value="1"/>
+<hit index="589" value="1"/>
+<hit index="591" value="1"/>
+<hit index="592" value="1"/>
+<hit index="593" value="1"/>
+<hit index="594" value="1"/>
+<hit index="595" value="2"/>
+<hit index="596" value="1"/>
+<hit index="597" value="1"/>
+<hit index="598" value="1"/>
+<hit index="599" value="1"/>
+<hit index="600" value="2"/>
+<hit index="601" value="1"/>
+<hit index="602" value="1"/>
+<hit index="603" value="1"/>
+<hit index="604" value="1"/>
+<hit index="605" value="2"/>
+<hit index="606" value="1"/>
+<hit index="607" value="1"/>
+<hit index="608" value="1"/>
+<hit index="609" value="1"/>
+<hit index="610" value="2"/>
+<hit index="611" value="1"/>
+<hit index="612" value="1"/>
+<hit index="614" value="1"/>
+<hit index="615" value="1"/>
+<hit index="616" value="1"/>
+<hit index="617" value="1"/>
+<hit index="618" value="2"/>
+<hit index="619" value="1"/>
+<hit index="620" value="1"/>
+<hit index="622" value="1"/>
+<hit index="623" value="1"/>
+<hit index="624" value="1"/>
+<hit index="625" value="1"/>
+<hit index="626" value="2"/>
+<hit index="627" value="1"/>
+<hit index="628" value="1"/>
+<hit index="629" value="1"/>
+<hit index="630" value="1"/>
+<hit index="631" value="2"/>
+<hit index="632" value="1"/>
+<hit index="633" value="1"/>
+<hit index="635" value="1"/>
+<hit index="636" value="1"/>
+<hit index="637" value="1"/>
+<hit index="638" value="1"/>
+<hit index="639" value="2"/>
+<hit index="640" value="1"/>
+<hit index="641" value="1"/>
+<hit index="642" value="1"/>
+<hit index="643" value="1"/>
+<hit index="644" value="2"/>
+<hit index="645" value="1"/>
+<hit index="646" value="1"/>
+<hit index="647" value="1"/>
+<hit index="648" value="1"/>
+<hit index="649" value="2"/>
+<hit index="650" value="1"/>
+<hit index="652" value="1"/>
+<hit index="653" value="1"/>
+<hit index="654" value="1"/>
+<hit index="655" value="1"/>
+<hit index="656" value="1"/>
+<hit index="657" value="1"/>
+<hit index="659" value="1"/>
+<hit index="660" value="1"/>
+<hit index="661" value="1"/>
+<hit index="662" value="1"/>
+<hit index="663" value="1"/>
+<hit index="664" value="1"/>
+<hit index="665" value="1"/>
+<hit index="666" value="1"/>
+<hit index="668" value="1"/>
+</hits>
+<coverage domain="usercodeundertest" unit="block" covered="154" total="191" coveredRatio="0.806282722513089"/>
+</method>
+<chunk hits="1" offset="0000" domain="usercodeundertest"><source><![CDATA[{]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="1" offset="0001" domain="usercodeundertest"><source><![CDATA[this.button1 = new System.Windows.Forms.Button();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="000c" domain="usercodeundertest"><source><![CDATA[this.button2 = new System.Windows.Forms.Button();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="0017" domain="usercodeundertest"><source><![CDATA[this.richTextBox1 = new System.Windows.Forms.RichTextBox();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="0022" domain="usercodeundertest"><source><![CDATA[this.richTextBox2 = new System.Windows.Forms.RichTextBox();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="002d" domain="usercodeundertest"><source><![CDATA[this.button3 = new System.Windows.Forms.Button();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="0038" domain="usercodeundertest"><source><![CDATA[this.button4 = new System.Windows.Forms.Button();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="0043" domain="usercodeundertest"><source><![CDATA[this.button5 = new System.Windows.Forms.Button();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="004e" domain="usercodeundertest"><source><![CDATA[this.button6 = new System.Windows.Forms.Button();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="0059" domain="usercodeundertest"><source><![CDATA[this.button7 = new System.Windows.Forms.Button();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="0064" domain="usercodeundertest"><source><![CDATA[this.listBox1 = new System.Windows.Forms.ListBox();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="006f" domain="usercodeundertest"><source><![CDATA[this.label1 = new System.Windows.Forms.Label();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="007a" domain="usercodeundertest"><source><![CDATA[this.button8 = new System.Windows.Forms.Button();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="0085" domain="usercodeundertest"><source><![CDATA[this.button9 = new System.Windows.Forms.Button();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="0090" domain="usercodeundertest"><source><![CDATA[this.richTextBox3 = new System.Windows.Forms.RichTextBox();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="2" offset="009b" domain="usercodeundertest"><source><![CDATA[this.SuspendLayout();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // button1
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="1" offset="00a2" domain="usercodeundertest"><source><![CDATA[this.button1.Location = new System.Drawing.Point(547, 142);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="00bd" domain="usercodeundertest"><source><![CDATA[this.button1.Name = "button1";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="00ce" domain="usercodeundertest"><source><![CDATA[this.button1.Size = new System.Drawing.Size(75, 32);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="00e3" domain="usercodeundertest"><source><![CDATA[this.button1.TabIndex = 0;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="00f0" domain="usercodeundertest"><source><![CDATA[this.button1.Text = "Next";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0101" domain="usercodeundertest"><source><![CDATA[this.button1.UseVisualStyleBackColor = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="010e" domain="usercodeundertest"><source><![CDATA[this.button1.Click += new System.EventHandler(this.button1_Click);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // button2
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0126" domain="usercodeundertest"><source><![CDATA[this.button2.Location = new System.Drawing.Point(466, 142);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0141" domain="usercodeundertest"><source><![CDATA[this.button2.Name = "button2";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0152" domain="usercodeundertest"><source><![CDATA[this.button2.Size = new System.Drawing.Size(75, 32);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0167" domain="usercodeundertest"><source><![CDATA[this.button2.TabIndex = 1;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0174" domain="usercodeundertest"><source><![CDATA[this.button2.Text = "Last";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0185" domain="usercodeundertest"><source><![CDATA[this.button2.UseVisualStyleBackColor = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0192" domain="usercodeundertest"><source><![CDATA[this.button2.Click += new System.EventHandler(this.button2_Click);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // richTextBox1
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="01aa" domain="usercodeundertest"><source><![CDATA[this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="01c8" domain="usercodeundertest"><source><![CDATA[this.richTextBox1.Location = new System.Drawing.Point(12, 16);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="01dd" domain="usercodeundertest"><source><![CDATA[this.richTextBox1.Name = "richTextBox1";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="01ee" domain="usercodeundertest"><source><![CDATA[this.richTextBox1.Size = new System.Drawing.Size(610, 121);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0206" domain="usercodeundertest"><source><![CDATA[this.richTextBox1.TabIndex = 2;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0213" domain="usercodeundertest"><source><![CDATA[this.richTextBox1.Text = "";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // richTextBox2
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0224" domain="usercodeundertest"><source><![CDATA[this.richTextBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0242" domain="usercodeundertest"><source><![CDATA[this.richTextBox2.Location = new System.Drawing.Point(12, 178);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="025a" domain="usercodeundertest"><source><![CDATA[this.richTextBox2.Name = "richTextBox2";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="026b" domain="usercodeundertest"><source><![CDATA[this.richTextBox2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0278" domain="usercodeundertest"><source><![CDATA[this.richTextBox2.Size = new System.Drawing.Size(691, 121);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0290" domain="usercodeundertest"><source><![CDATA[this.richTextBox2.TabIndex = 3;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="029d" domain="usercodeundertest"><source><![CDATA[this.richTextBox2.Text = "";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // button3
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="02ae" domain="usercodeundertest"><source><![CDATA[this.button3.Location = new System.Drawing.Point(12, 142);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="02c6" domain="usercodeundertest"><source><![CDATA[this.button3.Name = "button3";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="02d7" domain="usercodeundertest"><source><![CDATA[this.button3.Size = new System.Drawing.Size(286, 32);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="02ef" domain="usercodeundertest"><source><![CDATA[this.button3.TabIndex = 4;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="02fc" domain="usercodeundertest"><source><![CDATA[this.button3.Text = "Start";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="030d" domain="usercodeundertest"><source><![CDATA[this.button3.UseVisualStyleBackColor = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="031a" domain="usercodeundertest"><source><![CDATA[this.button3.Click += new System.EventHandler(this.button3_Click);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // button4
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0332" domain="usercodeundertest"><source><![CDATA[this.button4.Location = new System.Drawing.Point(429, 440);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="034d" domain="usercodeundertest"><source><![CDATA[this.button4.Name = "button4";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="035e" domain="usercodeundertest"><source><![CDATA[this.button4.Size = new System.Drawing.Size(31, 23);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0373" domain="usercodeundertest"><source><![CDATA[this.button4.TabIndex = 6;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0380" domain="usercodeundertest"><source><![CDATA[this.button4.Text = "B";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0391" domain="usercodeundertest"><source><![CDATA[this.button4.UseVisualStyleBackColor = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // button5
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="039e" domain="usercodeundertest"><source><![CDATA[this.button5.Location = new System.Drawing.Point(547, 408);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="03b9" domain="usercodeundertest"><source><![CDATA[this.button5.Name = "button5";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="03ca" domain="usercodeundertest"><source><![CDATA[this.button5.Size = new System.Drawing.Size(159, 32);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="03e2" domain="usercodeundertest"><source><![CDATA[this.button5.TabIndex = 8;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="03ef" domain="usercodeundertest"><source><![CDATA[this.button5.Text = "Copy result";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0400" domain="usercodeundertest"><source><![CDATA[this.button5.UseVisualStyleBackColor = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="040d" domain="usercodeundertest"><source><![CDATA[this.button5.Click += new System.EventHandler(this.button5_Click);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // button6
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0425" domain="usercodeundertest"><source><![CDATA[this.button6.Location = new System.Drawing.Point(348, 440);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0440" domain="usercodeundertest"><source><![CDATA[this.button6.Name = "button6";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0451" domain="usercodeundertest"><source><![CDATA[this.button6.Size = new System.Drawing.Size(75, 32);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0466" domain="usercodeundertest"><source><![CDATA[this.button6.TabIndex = 9;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0474" domain="usercodeundertest"><source><![CDATA[this.button6.Text = "Beautify";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0485" domain="usercodeundertest"><source><![CDATA[this.button6.UseVisualStyleBackColor = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0492" domain="usercodeundertest"><source><![CDATA[this.button6.Click += new System.EventHandler(this.button6_Click);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // button7
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="04aa" domain="usercodeundertest"><source><![CDATA[this.button7.Location = new System.Drawing.Point(628, 142);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="04c5" domain="usercodeundertest"><source><![CDATA[this.button7.Name = "button7";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="04d6" domain="usercodeundertest"><source><![CDATA[this.button7.Size = new System.Drawing.Size(75, 32);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="04eb" domain="usercodeundertest"><source><![CDATA[this.button7.TabIndex = 10;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="04f9" domain="usercodeundertest"><source><![CDATA[this.button7.Text = "Apply";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="050a" domain="usercodeundertest"><source><![CDATA[this.button7.UseVisualStyleBackColor = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0517" domain="usercodeundertest"><source><![CDATA[this.button7.Click += new System.EventHandler(this.button7_Click);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // listBox1
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="052f" domain="usercodeundertest"><source><![CDATA[this.listBox1.FormattingEnabled = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="053c" domain="usercodeundertest"><source><![CDATA[this.listBox1.Location = new System.Drawing.Point(628, 16);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0554" domain="usercodeundertest"><source><![CDATA[this.listBox1.Name = "listBox1";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0565" domain="usercodeundertest"><source><![CDATA[this.listBox1.Size = new System.Drawing.Size(75, 121);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="057a" domain="usercodeundertest"><source><![CDATA[this.listBox1.TabIndex = 11;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0588" domain="usercodeundertest"><source><![CDATA[this.listBox1.Click += new System.EventHandler(this.listBox1_Click);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // label1
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="05a0" domain="usercodeundertest"><source><![CDATA[this.label1.AutoSize = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="05ad" domain="usercodeundertest"><source><![CDATA[this.label1.Location = new System.Drawing.Point(628, 1);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="05c4" domain="usercodeundertest"><source><![CDATA[this.label1.Name = "label1";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="05d5" domain="usercodeundertest"><source><![CDATA[this.label1.Size = new System.Drawing.Size(53, 13);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="05ea" domain="usercodeundertest"><source><![CDATA[this.label1.TabIndex = 12;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="05f8" domain="usercodeundertest"><source><![CDATA[this.label1.Text = "Problems:";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // button8
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0609" domain="usercodeundertest"><source><![CDATA[this.button8.Location = new System.Drawing.Point(385, 142);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0624" domain="usercodeundertest"><source><![CDATA[this.button8.Name = "button8";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0635" domain="usercodeundertest"><source><![CDATA[this.button8.Size = new System.Drawing.Size(75, 32);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="064a" domain="usercodeundertest"><source><![CDATA[this.button8.TabIndex = 13;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0658" domain="usercodeundertest"><source><![CDATA[this.button8.Text = "MarK";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0669" domain="usercodeundertest"><source><![CDATA[this.button8.UseVisualStyleBackColor = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0676" domain="usercodeundertest"><source><![CDATA[this.button8.Click += new System.EventHandler(this.button8_Click);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // button9
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="068e" domain="usercodeundertest"><source><![CDATA[this.button9.Location = new System.Drawing.Point(304, 142);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="06a9" domain="usercodeundertest"><source><![CDATA[this.button9.Name = "button9";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="06ba" domain="usercodeundertest"><source><![CDATA[this.button9.Size = new System.Drawing.Size(75, 32);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="06cf" domain="usercodeundertest"><source><![CDATA[this.button9.TabIndex = 14;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="06dd" domain="usercodeundertest"><source><![CDATA[this.button9.Text = "Unmark";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="06ee" domain="usercodeundertest"><source><![CDATA[this.button9.UseVisualStyleBackColor = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="06fb" domain="usercodeundertest"><source><![CDATA[this.button9.Click += new System.EventHandler(this.button9_Click);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // richTextBox3
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0713" domain="usercodeundertest"><source><![CDATA[this.richTextBox3.Location = new System.Drawing.Point(12, 305);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="072b" domain="usercodeundertest"><source><![CDATA[this.richTextBox3.Name = "richTextBox3";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="073c" domain="usercodeundertest"><source><![CDATA[this.richTextBox3.Size = new System.Drawing.Size(691, 97);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0754" domain="usercodeundertest"><source><![CDATA[this.richTextBox3.TabIndex = 15;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0762" domain="usercodeundertest"><source><![CDATA[this.richTextBox3.Text = "";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            // 
+            // Form1
+            // 
+            ]]></source>
+</chunk>
+<chunk hits="3" offset="0773" domain="usercodeundertest"><source><![CDATA[this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="1" offset="0789" domain="usercodeundertest"><source><![CDATA[this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="1" offset="0791" domain="usercodeundertest"><source><![CDATA[this.ClientSize = new System.Drawing.Size(717, 452);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="1" offset="07a7" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.richTextBox3);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="1" offset="07b9" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.button9);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="07cb" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.button8);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="07dd" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.label1);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="07ef" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.listBox1);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="0801" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.button7);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="0813" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.button6);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="0825" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.button5);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="0837" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.button4);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="0849" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.button3);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="085b" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.richTextBox2);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="086d" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.richTextBox1);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="087f" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.button2);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="0891" domain="usercodeundertest"><source><![CDATA[this.Controls.Add(this.button1);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="08a3" domain="usercodeundertest"><source><![CDATA[this.KeyPreview = true;]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="08ab" domain="usercodeundertest"><source><![CDATA[this.Name = "Form1";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="08b7" domain="usercodeundertest"><source><![CDATA[this.Text = "Form1";]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="08c3" domain="usercodeundertest"><source><![CDATA[this.Load += new System.EventHandler(this.Form1_Load);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="08d6" domain="usercodeundertest"><source><![CDATA[this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="08e9" domain="usercodeundertest"><source><![CDATA[this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="08fc" domain="usercodeundertest"><source><![CDATA[this.ResumeLayout(false);]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+            ]]></source>
+</chunk>
+<chunk hits="0" offset="0904" domain="usercodeundertest"><source><![CDATA[this.PerformLayout();]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+
+        ]]></source>
+</chunk>
+<chunk hits="0" offset="090b" domain="usercodeundertest"><source><![CDATA[}]]></source>
+</chunk>
+<chunk hits="-1" domain="unknown"><source><![CDATA[
+
+        #endregion
+
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.RichTextBox richTextBox3;
+    }
+}
+
+]]></source>
+</chunk>
+</document>
+<document src="(no sources available for some parts of System.Windows.Forms, System.Drawing, WindowsFormsApplication1.Explorables)" missing="true"><method name="get_NativeMouseWheelSupport" type="System.Windows.Forms.SystemInformation" token="600402e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="get_CreateParams" type="System.Windows.Forms.Control" token="60006aa" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="52" total="62" coveredRatio="0.83870967741935487"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Control" token="6000659" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="32" total="36" coveredRatio="0.88888888888888884"/>
+</method>
+<method name="get_CreateParams" type="System.Windows.Forms.RichTextBox" token="6003cb4" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="40" total="59" coveredRatio="0.67796610169491522"/>
+</method>
+<method name="get_DefaultFont" type="System.Drawing.SystemFonts" token="600054f" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="25" total="48" coveredRatio="0.52083333333333337"/>
+</method>
+<method name="GetObject" type="System.Drawing.SafeNativeMethods" token="60006ed" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="GetDC" type="System.Drawing.UnsafeNativeMethods" token="6000efc" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="FromLogFont" type="System.Drawing.Font" token="6000661" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="13" total="27" coveredRatio="0.48148148148148145"/>
+</method>
+<method name=".ctor" type="System.Drawing.Font" token="6000681" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="17" total="25" coveredRatio="0.68"/>
+</method>
+<method name="ReleaseDC" type="System.Drawing.UnsafeNativeMethods" token="6000f00" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="FromHdcInternal" type="System.Drawing.Graphics" token="6000229" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="7" coveredRatio="0.7142857142857143"/>
+</method>
+<method name="get_DpiY" type="System.Drawing.Graphics" token="600024d" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="7" coveredRatio="0.7142857142857143"/>
+</method>
+<method name="GetHeight" type="System.Drawing.Font" token="6000675" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="12" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="GetEmHeight" type="System.Drawing.FontFamily" token="600069f" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="7" coveredRatio="0.7142857142857143"/>
+</method>
+<method name="GetLineSpacing" type="System.Drawing.FontFamily" token="60006a2" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="7" coveredRatio="0.7142857142857143"/>
+</method>
+<method name="GdipDeleteGraphics" type="System.Drawing.SafeNativeMethods+Gdip" token="600086d" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="CreateNativeFont" type="System.Drawing.Font" token="600067f" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="13" coveredRatio="0.46153846153846156"/>
+</method>
+<method name="GdipDeleteFont" type="System.Drawing.SafeNativeMethods+Gdip" token="6000921" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="get_Height" type="System.Drawing.Font" token="600067c" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="SystemColorToArgb" type="System.Drawing.KnownColorTable" token="6000eea" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="CreateFontFamily" type="System.Drawing.FontFamily" token="60006a6" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="20" coveredRatio="0.3"/>
+</method>
+<method name="get_CreateThreadId" type="System.Windows.Forms.Control" token="60008ec" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="8" coveredRatio="0.5"/>
+</method>
+<method name="Create" type="WindowsFormsApplication1.Form1Factory" token="6000002" module="&lt;In Memory Module&gt;"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="12" coveredRatio="0.083333333333333329"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Form" token="6002c8e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="9" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Drawing.Rectangle" token="600046d" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.ContainerControl" token="6000aa9" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.ScrollableControl" token="6000a52" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="5" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Control" token="6000658" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.PropertyStore" token="6003c26" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Control+ControlNativeWindow" token="60009f1" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.NativeWindow" token="60009c2" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="set_RequiredScalingEnabled" type="System.Windows.Forms.Control" token="6000904" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="set_RequiredScaling" type="System.Windows.Forms.Control" token="6000902" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="SetStyle" type="System.Windows.Forms.Control" token="6000856" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="7" coveredRatio="0.5714285714285714"/>
+</method>
+<method name="InitMouseWheelSupport" type="System.Windows.Forms.Control" token="6000932" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="11" coveredRatio="0.45454545454545453"/>
+</method>
+<method name="get_DefaultMargin" type="System.Windows.Forms.Control" token="60006b5" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="op_Inequality" type="System.Windows.Forms.Padding" token="600393d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="op_Equality" type="System.Windows.Forms.Padding" token="600393c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="13" total="13" coveredRatio="1"/>
+</method>
+<method name="get_Left" type="System.Windows.Forms.Padding" token="600392e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="get_Top" type="System.Windows.Forms.Padding" token="6003932" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Right" type="System.Windows.Forms.Padding" token="6003930" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="get_Bottom" type="System.Windows.Forms.Padding" token="600392c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="get_DefaultMinimumSize" type="System.Windows.Forms.Control" token="60006b7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="op_Inequality" type="System.Drawing.Size" token="60004e1" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="op_Equality" type="System.Drawing.Size" token="60004e0" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="7" coveredRatio="0.8571428571428571"/>
+</method>
+<method name="get_Width" type="System.Drawing.Size" token="60004e4" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Height" type="System.Drawing.Size" token="60004e6" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_DefaultMaximumSize" type="System.Windows.Forms.Control" token="60006b6" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_DefaultSize" type="System.Windows.Forms.Form" token="6002cb1" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Drawing.Size" token="60004dc" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="xClearPreferredSizeCache" type="System.Windows.Forms.Layout.CommonProperties" token="6004e60" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="System.Windows.Forms.Layout.IArrangedElement.get_Properties" type="System.Windows.Forms.Control" token="600087a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_Properties" type="System.Windows.Forms.Control" token="60006fa" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="SetSize" type="System.Windows.Forms.PropertyStore" token="6003c1d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="10" coveredRatio="0.7"/>
+</method>
+<method name="GetObject" type="System.Windows.Forms.PropertyStore" token="6003c17" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="11" coveredRatio="0.72727272727272729"/>
+</method>
+<method name="SplitKey" type="System.Windows.Forms.PropertyStore" token="6003c23" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="LocateObjectEntry" type="System.Windows.Forms.PropertyStore" token="6003c22" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="17" total="28" coveredRatio="0.6071428571428571"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.PropertyStore+SizeWrapper" token="600685b" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="SetObject" type="System.Windows.Forms.PropertyStore" token="6003c1f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="13" total="16" coveredRatio="0.8125"/>
+</method>
+<method name="get_CreateParams" type="System.Windows.Forms.Form" token="6002caf" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="42" total="88" coveredRatio="0.47727272727272729"/>
+</method>
+<method name="get_CreateParams" type="System.Windows.Forms.ContainerControl" token="6000ab8" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="get_CreateParams" type="System.Windows.Forms.ScrollableControl" token="6000a5b" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="16" total="22" coveredRatio="0.72727272727272729"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.CreateParams" token="60017d3" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_Style" type="System.Windows.Forms.CreateParams" token="60017c1" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_ExStyle" type="System.Windows.Forms.CreateParams" token="60017c3" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_ClassStyle" type="System.Windows.Forms.CreateParams" token="60017c5" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_Caption" type="System.Windows.Forms.CreateParams" token="60017bf" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_X" type="System.Windows.Forms.CreateParams" token="60017c7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_Y" type="System.Windows.Forms.CreateParams" token="60017c9" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_Width" type="System.Windows.Forms.CreateParams" token="60017cb" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_Height" type="System.Windows.Forms.CreateParams" token="60017cd" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="GetStyle" type="System.Windows.Forms.Control" token="60007b7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_Parent" type="System.Windows.Forms.CreateParams" token="60017cf" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Style" type="System.Windows.Forms.CreateParams" token="60017c0" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Enabled" type="System.Windows.Forms.Control" token="60006c3" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="9" coveredRatio="0.88888888888888884"/>
+</method>
+<method name="GetState" type="System.Windows.Forms.Control" token="60007b5" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_ParentInternal" type="System.Windows.Forms.Form" token="6002cee" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_ParentInternal" type="System.Windows.Forms.Control" token="60006f6" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Parent" type="System.Windows.Forms.CreateParams" token="60017ce" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_IsActiveX" type="System.Windows.Forms.Control" token="60006dd" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="GetState2" type="System.Windows.Forms.Control" token="60007b6" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_RightToLeft" type="System.Windows.Forms.Control" token="6000707" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="10" total="12" coveredRatio="0.83333333333333337"/>
+</method>
+<method name="GetInteger" type="System.Windows.Forms.PropertyStore" token="6003c15" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="11" coveredRatio="0.63636363636363635"/>
+</method>
+<method name="LocateIntegerEntry" type="System.Windows.Forms.PropertyStore" token="6003c21" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="16" total="28" coveredRatio="0.5714285714285714"/>
+</method>
+<method name="get_DefaultRightToLeft" type="System.Windows.Forms.Control" token="60008ed" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_HScroll" type="System.Windows.Forms.ScrollableControl" token="6000a5e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="GetScrollState" type="System.Windows.Forms.ScrollableControl" token="6000a66" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_HorizontalScroll" type="System.Windows.Forms.ScrollableControl" token="6000a60" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.HScrollProperties" token="6002f0b" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.ScrollProperties" token="6002ef6" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_Visible" type="System.Windows.Forms.ScrollProperties" token="6002f07" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_VScroll" type="System.Windows.Forms.ScrollableControl" token="6000a61" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_VerticalScroll" type="System.Windows.Forms.ScrollableControl" token="6000a63" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.VScrollProperties" token="6004bf6" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_ExStyle" type="System.Windows.Forms.CreateParams" token="60017c2" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_IsHandleCreated" type="System.Windows.Forms.Control" token="60006d9" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="get_Handle" type="System.Windows.Forms.NativeWindow" token="60009c4" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_TopLevel" type="System.Windows.Forms.Form" token="6002d06" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="GetTopLevel" type="System.Windows.Forms.Control" token="60007a6" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="GetObject" type="System.Windows.Forms.PropertyStore" token="6003c16" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="FillInCreateParamsBorderStyles" type="System.Windows.Forms.Form" token="6002dad" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="31" coveredRatio="0.16129032258064516"/>
+</method>
+<method name="FillInCreateParamsWindowState" type="System.Windows.Forms.Form" token="6002daf" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="9" coveredRatio="0.33333333333333331"/>
+</method>
+<method name="FillInCreateParamsBorderIcons" type="System.Windows.Forms.Form" token="6002dac" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="26" total="49" coveredRatio="0.53061224489795922"/>
+</method>
+<method name="get_FormBorderStyle" type="System.Windows.Forms.Form" token="6002ca7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_Text" type="System.Windows.Forms.Form" token="6002d04" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_Text" type="System.Windows.Forms.Control" token="600071d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="7" coveredRatio="0.8571428571428571"/>
+</method>
+<method name="get_CacheTextInternal" type="System.Windows.Forms.Control" token="60008e7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="6" coveredRatio="0.83333333333333337"/>
+</method>
+<method name="get_WindowText" type="System.Windows.Forms.Form" token="6002d0f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="9" coveredRatio="0.44444444444444442"/>
+</method>
+<method name="get_IsRestrictedWindow" type="System.Windows.Forms.Form" token="6002cc2" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="13" coveredRatio="0.61538461538461542"/>
+</method>
+<method name="get_WindowAdornmentModification" type="System.Windows.Forms.IntSecurity" token="6006b5f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="get_AllWindows" type="System.Windows.Forms.IntSecurity" token="6006b44" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="get_WindowText" type="System.Windows.Forms.Control" token="6000732" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="21" coveredRatio="0.23809523809523808"/>
+</method>
+<method name="get_ControlBox" type="System.Windows.Forms.Form" token="6002cad" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_MaximizeBox" type="System.Windows.Forms.Form" token="6002cdb" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_MinimizeBox" type="System.Windows.Forms.Form" token="6002ce3" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_HelpButton" type="System.Windows.Forms.Form" token="6002cb9" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_ShowIcon" type="System.Windows.Forms.Form" token="6002cf2" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_IsMdiChild" type="System.Windows.Forms.Form" token="6002cbf" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="InstallIfNeeded" type="System.Windows.Forms.WindowsFormsSynchronizationContext" token="6004dd1" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="21" total="22" coveredRatio="0.95454545454545459"/>
+</method>
+<method name="get_AutoInstall" type="System.Windows.Forms.WindowsFormsSynchronizationContext" token="6004dca" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.WindowsFormsSynchronizationContext" token="6004dc5" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="8" coveredRatio="1"/>
+</method>
+<method name="set_DestinationThread" type="System.Windows.Forms.WindowsFormsSynchronizationContext" token="6004dd0" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="SetScrollState" type="System.Windows.Forms.ScrollableControl" token="6000a76" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="3" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="SetState2" type="System.Windows.Forms.Control" token="600096b" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="SetState" type="System.Windows.Forms.Control" token="6000855" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Button" token="600118e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.ButtonBase" token="600112a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="9" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.ImageList+Indexer" token="600146d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_DefaultSize" type="System.Windows.Forms.ButtonBase" token="6001133" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_CreateParams" type="System.Windows.Forms.Button" token="6001195" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="14" coveredRatio="0.5714285714285714"/>
+</method>
+<method name="get_CreateParams" type="System.Windows.Forms.ButtonBase" token="6001134" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="34" coveredRatio="0.11764705882352941"/>
+</method>
+<method name="get_OwnerDraw" type="System.Windows.Forms.ButtonBase" token="6001173" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_FlatStyle" type="System.Windows.Forms.ButtonBase" token="6001138" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_ClassName" type="System.Windows.Forms.CreateParams" token="60017bd" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="SetFlag" type="System.Windows.Forms.ButtonBase" token="6001182" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="8" coveredRatio="0.75"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.RichTextBox" token="6003ca1" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="11" total="11" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.TextBoxBase" token="6001cf6" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="8" coveredRatio="1"/>
+</method>
+<method name="get_DefaultSize" type="System.Windows.Forms.RichTextBox" token="6003cb7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_CreateParams" type="System.Windows.Forms.TextBoxBase" token="6001c95" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="27" total="32" coveredRatio="0.84375"/>
+</method>
+<method name="get_Multiline" type="System.Windows.Forms.RichTextBox" token="6003cc3" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_Multiline" type="System.Windows.Forms.TextBoxBase" token="6001cae" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_BorderStyle" type="System.Windows.Forms.TextBoxBase" token="6001c8e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Height" type="System.Windows.Forms.Control" token="60006d7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_InConstructor" type="System.Windows.Forms.RichTextBox" token="6003d3a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="set_DetectUrls" type="System.Windows.Forms.RichTextBox" token="6003cb6" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="12" coveredRatio="0.58333333333333337"/>
+</method>
+<method name="get_DetectUrls" type="System.Windows.Forms.RichTextBox" token="6003cb5" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_ScrollBars" type="System.Windows.Forms.RichTextBox" token="6003ccd" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="13" total="16" coveredRatio="0.8125"/>
+</method>
+<method name="IsEnumValid_NotSequential" type="System.Windows.Forms.ClientUtils" token="6000007" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="5" coveredRatio="0.6"/>
+</method>
+<method name="get_ScrollBars" type="System.Windows.Forms.RichTextBox" token="6003ccc" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_AutoSize" type="System.Windows.Forms.RichTextBox" token="6003ca4" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_AutoSize" type="System.Windows.Forms.TextBoxBase" token="6001c80" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="CreateTransactionIf" type="System.Windows.Forms.Layout.LayoutTransaction" token="6006d2c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="5" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Layout.LayoutTransaction" token="6006d29" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Layout.LayoutTransaction" token="6006d2a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="9" coveredRatio="1"/>
+</method>
+<method name="RecreateHandle" type="System.Windows.Forms.Control" token="600083c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="RecreateHandleCore" type="System.Windows.Forms.Control" token="600083d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="57" coveredRatio="0.10526315789473684"/>
+</method>
+<method name="Dispose" type="System.Windows.Forms.Layout.LayoutTransaction" token="6006d2b" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="set_RichTextShortcutsEnabled" type="System.Windows.Forms.RichTextBox" token="6003cc7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="6" coveredRatio="0.83333333333333337"/>
+</method>
+<method name="set_MaxLength" type="System.Windows.Forms.RichTextBox" token="6003cc2" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_MaxLength" type="System.Windows.Forms.TextBoxBase" token="6001ca9" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="11" coveredRatio="0.36363636363636365"/>
+</method>
+<method name="UpdateMaxLength" type="System.Windows.Forms.RichTextBox" token="6003d32" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="6" coveredRatio="0.5"/>
+</method>
+<method name="set_Multiline" type="System.Windows.Forms.RichTextBox" token="6003cc4" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_Multiline" type="System.Windows.Forms.TextBoxBase" token="6001caf" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="16" total="18" coveredRatio="0.88888888888888884"/>
+</method>
+<method name="AdjustHeight" type="System.Windows.Forms.TextBoxBase" token="6001cf9" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="13" total="19" coveredRatio="0.68421052631578949"/>
+</method>
+<method name="get_PreferredHeight" type="System.Windows.Forms.TextBoxBase" token="6001cb7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="6" coveredRatio="1"/>
+</method>
+<method name="get_FontHeight" type="System.Windows.Forms.Control" token="60006cc" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="19" total="26" coveredRatio="0.73076923076923073"/>
+</method>
+<method name="get_Font" type="System.Windows.Forms.RichTextBox" token="6003cbc" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_Font" type="System.Windows.Forms.Control" token="60006c8" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="12" total="20" coveredRatio="0.6"/>
+</method>
+<method name="GetParentFont" type="System.Windows.Forms.Control" token="60008f4" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="9" coveredRatio="1"/>
+</method>
+<method name="get_AmbientPropertiesService" type="System.Windows.Forms.Control" token="60008e1" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="15" coveredRatio="0.6"/>
+</method>
+<method name="get_Site" type="System.Windows.Forms.Control" token="600070c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_DefaultFont" type="System.Windows.Forms.Control" token="60006b3" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="FromHfont" type="System.Drawing.Font" token="600065f" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="9" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Drawing.SafeNativeMethods+LOGFONT" token="6000f31" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="Add" type="System.Internal.HandleCollector" token="6000dd0" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="Add" type="System.Internal.HandleCollector+HandleType" token="6000dd8" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="12" total="18" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="NeedCollection" type="System.Internal.HandleCollector+HandleType" token="6000dda" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="8" coveredRatio="0.625"/>
+</method>
+<method name=".ctor" type="System.Drawing.FontFamily" token="60006a4" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="SetNativeFamily" type="System.Drawing.FontFamily" token="60006a3" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="SetFontFamily" type="System.Drawing.Font" token="6000685" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="Initialize" type="System.Drawing.Font" token="6000683" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="17" total="24" coveredRatio="0.70833333333333337"/>
+</method>
+<method name="Remove" type="System.Internal.HandleCollector" token="6000dd4" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="Remove" type="System.Internal.HandleCollector+HandleType" token="6000ddb" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="11" total="14" coveredRatio="0.7857142857142857"/>
+</method>
+<method name="FontInPoints" type="System.Drawing.SystemFonts" token="6000554" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="7" coveredRatio="1"/>
+</method>
+<method name="get_FontFamily" type="System.Drawing.Font" token="6000664" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_SizeInPoints" type="System.Drawing.Font" token="600067a" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="17" total="19" coveredRatio="0.89473684210526316"/>
+</method>
+<method name="get_Unit" type="System.Drawing.Font" token="600067b" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Drawing.Graphics" token="6000322" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="6" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="get_NativeGraphics" type="System.Drawing.Graphics" token="6000323" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_NativeFont" type="System.Drawing.Font" token="6000684" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Style" type="System.Drawing.Font" token="6000678" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_NativeFamily" type="System.Drawing.FontFamily" token="60006a7" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="Dispose" type="System.Drawing.Graphics" token="6000232" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="Dispose" type="System.Drawing.Graphics" token="6000324" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="11" total="23" coveredRatio="0.47826086956521741"/>
+</method>
+<method name="get_PrintingHelper" type="System.Drawing.Graphics" token="6000325" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Initialized" type="System.Drawing.SafeNativeMethods+Gdip" token="60006f9" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_GdiCharSet" type="System.Drawing.Font" token="6000668" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_GdiVerticalFont" type="System.Drawing.Font" token="6000669" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Drawing.Font" token="6000655" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="Dispose" type="System.Drawing.Font" token="6000666" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="Dispose" type="System.Drawing.Font" token="6000686" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="10" coveredRatio="0.6"/>
+</method>
+<method name="SetSystemFontName" type="System.Drawing.Font" token="6000689" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="GetHeight" type="System.Drawing.Font" token="6000676" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="8" coveredRatio="1"/>
+</method>
+<method name="SetInteger" type="System.Windows.Forms.PropertyStore" token="6003c1e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="11" total="16" coveredRatio="0.6875"/>
+</method>
+<method name="get_BorderSize" type="System.Windows.Forms.SystemInformation" token="6004000" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="set_Height" type="System.Windows.Forms.Control" token="60006d8" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="SetBounds" type="System.Windows.Forms.Control" token="6000851" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="18" total="18" coveredRatio="1"/>
+</method>
+<method name="InitScaling" type="System.Windows.Forms.Control" token="6000931" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="OnMultilineChanged" type="System.Windows.Forms.TextBoxBase" token="6001ce1" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="get_CanRaiseEvents" type="System.Windows.Forms.Control" token="600068e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="5" coveredRatio="0.6"/>
+</method>
+<method name="set_AutoSize" type="System.Windows.Forms.RichTextBox" token="6003ca5" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_AutoSize" type="System.Windows.Forms.TextBoxBase" token="6001c81" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="9" coveredRatio="0.77777777777777779"/>
+</method>
+<method name="OnAutoSizeChanged" type="System.Windows.Forms.Control" token="60007cb" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.ListBox" token="6001244" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="6" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.ListControl" token="6001236" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_DefaultSize" type="System.Windows.Forms.ListBox" token="6001256" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_CreateParams" type="System.Windows.Forms.ListBox" token="6001253" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="18" total="45" coveredRatio="0.4"/>
+</method>
+<method name="get_RightToLeft" type="System.Windows.Forms.ListBox" token="600126b" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="get_RunningOnWin2K" type="System.Windows.Forms.ListBox" token="60012be" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="10" coveredRatio="0.9"/>
+</method>
+<method name="SetBounds" type="System.Windows.Forms.Control" token="6000850" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="10" coveredRatio="0.6"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Label" token="600310e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="14" total="14" coveredRatio="1"/>
+</method>
+<method name="get_DefaultMargin" type="System.Windows.Forms.Label" token="6003122" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Padding" token="6003929" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="4" coveredRatio="0.5"/>
+</method>
+<method name="set_Margin" type="System.Windows.Forms.Control" token="60006e8" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="7" coveredRatio="1"/>
+</method>
+<method name="ClampNegativePaddingToZero" type="System.Windows.Forms.Layout.LayoutUtils" token="6004e9c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="15" total="15" coveredRatio="1"/>
+</method>
+<method name="get_All" type="System.Windows.Forms.Padding" token="600392a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="3" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="set_Left" type="System.Windows.Forms.Padding" token="600392f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="4" coveredRatio="0.75"/>
+</method>
+<method name="set_Top" type="System.Windows.Forms.Padding" token="6003933" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="4" coveredRatio="0.75"/>
+</method>
+<method name="set_Right" type="System.Windows.Forms.Padding" token="6003931" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="4" coveredRatio="0.75"/>
+</method>
+<method name="set_Bottom" type="System.Windows.Forms.Padding" token="600392d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="4" coveredRatio="0.75"/>
+</method>
+<method name="get_Margin" type="System.Windows.Forms.Control" token="60006e7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="GetMargin" type="System.Windows.Forms.Layout.CommonProperties" token="6004e54" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="GetPadding" type="System.Windows.Forms.PropertyStore" token="6003c10" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="5" coveredRatio="0.6"/>
+</method>
+<method name="SetMargin" type="System.Windows.Forms.Layout.CommonProperties" token="6004e5a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="5" coveredRatio="1"/>
+</method>
+<method name="SetPadding" type="System.Windows.Forms.PropertyStore" token="6003c1b" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="10" coveredRatio="0.5"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.PropertyStore+PaddingWrapper" token="6006859" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="System.Windows.Forms.Layout.IArrangedElement.get_Container" type="System.Windows.Forms.Control" token="6000877" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="DoLayout" type="System.Windows.Forms.Layout.LayoutTransaction" token="6006d2d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="6" coveredRatio="1"/>
+</method>
+<method name="OnMarginChanged" type="System.Windows.Forms.Control" token="600080c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="get_DefaultSize" type="System.Windows.Forms.Label" token="6003123" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="6" coveredRatio="0.83333333333333337"/>
+</method>
+<method name="get_AutoSize" type="System.Windows.Forms.Label" token="600310f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_AutoSize" type="System.Windows.Forms.Control" token="600066d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="GetAutoSize" type="System.Windows.Forms.Layout.CommonProperties" token="6004e53" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="GetLayoutState" type="System.Windows.Forms.Layout.CommonProperties" token="6004e76" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="GetInteger" type="System.Windows.Forms.PropertyStore" token="6003c14" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_CreateParams" type="System.Windows.Forms.Label" token="6003120" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="20" total="47" coveredRatio="0.425531914893617"/>
+</method>
+<method name="get_OwnerDraw" type="System.Windows.Forms.Label" token="600313a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="IsOwnerDraw" type="System.Windows.Forms.Label" token="6003158" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_FlatStyle" type="System.Windows.Forms.Label" token="6003124" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_BorderStyle" type="System.Windows.Forms.Label" token="600311d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_UseMnemonic" type="System.Windows.Forms.Label" token="600314c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="SetSelfAutoSizeInDefaultLayout" type="System.Windows.Forms.Layout.CommonProperties" token="6004e6a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="6" coveredRatio="0.83333333333333337"/>
+</method>
+<method name="SetLayoutState" type="System.Windows.Forms.Layout.CommonProperties" token="6004e77" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="set_TabStop" type="System.Windows.Forms.Label" token="6003140" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_TabStop" type="System.Windows.Forms.Control" token="6000717" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="8" coveredRatio="0.875"/>
+</method>
+<method name="get_TabStop" type="System.Windows.Forms.Control" token="6000716" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_TabStopInternal" type="System.Windows.Forms.Control" token="6000718" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_TabStopInternal" type="System.Windows.Forms.Control" token="6000905" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="OnTabStopChanged" type="System.Windows.Forms.Control" token="60007ea" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="get_Width" type="System.Windows.Forms.Control" token="600072e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="SuspendLayout" type="System.Windows.Forms.Control" token="600086a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="OnLayoutSuspended" type="System.Windows.Forms.Control" token="6000808" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Drawing.Point" token="6000449" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_Location" type="System.Windows.Forms.Control" token="60006e4" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="get_X" type="System.Drawing.Point" token="600044d" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Y" type="System.Drawing.Point" token="600044f" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="SetBoundsCore" type="System.Windows.Forms.Control" token="6000852" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="20" total="42" coveredRatio="0.47619047619047616"/>
+</method>
+<method name="UpdateSpecifiedBounds" type="System.Windows.Forms.Layout.CommonProperties" token="6004e5e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="10" total="23" coveredRatio="0.43478260869565216"/>
+</method>
+<method name="GetSpecifiedBounds" type="System.Windows.Forms.Layout.CommonProperties" token="6004e57" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="8" coveredRatio="0.625"/>
+</method>
+<method name="GetRectangle" type="System.Windows.Forms.PropertyStore" token="6003c13" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="5" coveredRatio="0.6"/>
+</method>
+<method name="get_Bounds" type="System.Windows.Forms.Control" token="600068a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_X" type="System.Drawing.Rectangle" token="6000474" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Y" type="System.Drawing.Rectangle" token="6000476" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Width" type="System.Drawing.Rectangle" token="6000478" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Height" type="System.Drawing.Rectangle" token="600047a" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="ContainsObject" type="System.Windows.Forms.PropertyStore" token="6003c0c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="ApplyBoundsConstraints" type="System.Windows.Forms.Control" token="60007ad" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="19" coveredRatio="0.42105263157894735"/>
+</method>
+<method name="get_MaximumSize" type="System.Windows.Forms.Control" token="60006eb" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="GetMaximumSize" type="System.Windows.Forms.Layout.CommonProperties" token="6004e55" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="GetSize" type="System.Windows.Forms.PropertyStore" token="6003c11" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="5" coveredRatio="0.6"/>
+</method>
+<method name="get_MinimumSize" type="System.Windows.Forms.Control" token="60006ed" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="GetMinimumSize" type="System.Windows.Forms.Layout.CommonProperties" token="6004e56" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="UpdateBounds" type="System.Windows.Forms.Control" token="600086d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="6" coveredRatio="1"/>
+</method>
+<method name="UpdateBounds" type="System.Windows.Forms.Control" token="600086e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="17" total="17" coveredRatio="1"/>
+</method>
+<method name="OnLocationChanged" type="System.Windows.Forms.Control" token="60007f6" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="6" coveredRatio="0.83333333333333337"/>
+</method>
+<method name="OnMove" type="System.Windows.Forms.Control" token="6000817" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="8" coveredRatio="0.75"/>
+</method>
+<method name="get_RenderTransparent" type="System.Windows.Forms.Control" token="60008ff" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="6" coveredRatio="1"/>
+</method>
+<method name="get_BackColor" type="System.Windows.Forms.ButtonBase" token="6001131" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_BackColor" type="System.Windows.Forms.Control" token="6000676" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="15" total="29" coveredRatio="0.51724137931034486"/>
+</method>
+<method name="get_RawBackColor" type="System.Windows.Forms.Control" token="60008fc" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="GetColor" type="System.Windows.Forms.PropertyStore" token="6003c0d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="GetColor" type="System.Windows.Forms.PropertyStore" token="6003c0e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="5" coveredRatio="0.6"/>
+</method>
+<method name="get_IsEmpty" type="System.Drawing.Color" token="60001dc" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_DefaultBackColor" type="System.Windows.Forms.Control" token="60006b1" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_Control" type="System.Drawing.SystemColors" token="600052e" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Drawing.Color" token="60001d5" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_A" type="System.Drawing.Color" token="60001da" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_Value" type="System.Drawing.Color" token="60001e0" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="7" coveredRatio="0.7142857142857143"/>
+</method>
+<method name="get_IsKnownColor" type="System.Drawing.Color" token="60001db" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="KnownColorToArgb" type="System.Drawing.KnownColorTable" token="6000ee8" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="4" coveredRatio="0.75"/>
+</method>
+<method name="EnsureColorTable" type="System.Drawing.KnownColorTable" token="6000ee4" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="InitColorTable" type="System.Drawing.KnownColorTable" token="6000ee5" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="UpdateSystemColors" type="System.Drawing.KnownColorTable" token="6000eee" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="34" total="34" coveredRatio="1"/>
+</method>
+<method name="FromWin32Value" type="System.Drawing.KnownColorTable" token="6000eec" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="Encode" type="System.Drawing.KnownColorTable" token="6000eeb" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_Name" type="System.Windows.Forms.Control" token="60006f3" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="7" coveredRatio="0.5714285714285714"/>
+</method>
+<method name="set_Size" type="System.Windows.Forms.Control" token="600070f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="OnSizeChanged" type="System.Windows.Forms.Control" token="600081f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="6" coveredRatio="0.83333333333333337"/>
+</method>
+<method name="OnResize" type="System.Windows.Forms.Control" token="600081d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="10" coveredRatio="0.9"/>
+</method>
+<method name="Invalidate" type="System.Windows.Forms.Control" token="60007bd" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="Invalidate" type="System.Windows.Forms.Control" token="60007be" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="16" coveredRatio="0.1875"/>
+</method>
+<method name="System.Windows.Forms.Layout.IArrangedElement.PerformLayout" type="System.Windows.Forms.Control" token="6000879" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.LayoutEventArgs" token="6003187" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="PerformLayout" type="System.Windows.Forms.Control" token="600094b" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="18" total="27" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="GetAnyDisposingInHierarchy" type="System.Windows.Forms.Control" token="6000928" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="6" coveredRatio="0.83333333333333337"/>
+</method>
+<method name="get_Disposing" type="System.Windows.Forms.Control" token="60006bc" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_CacheTextInternal" type="System.Windows.Forms.Control" token="60008e8" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="22" coveredRatio="0.22727272727272727"/>
+</method>
+<method name="OnLayout" type="System.Windows.Forms.Control" token="6000806" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="11" total="15" coveredRatio="0.73333333333333328"/>
+</method>
+<method name="get_LayoutEngine" type="System.Windows.Forms.Control" token="6000675" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="Layout" type="System.Windows.Forms.Layout.LayoutEngine" token="600170f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="CastToArrangedElement" type="System.Windows.Forms.Layout.LayoutEngine" token="600170a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="6" coveredRatio="0.33333333333333331"/>
+</method>
+<method name="LayoutCore" type="System.Windows.Forms.Layout.DefaultLayout" token="6004e7a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="xLayout" type="System.Windows.Forms.Layout.DefaultLayout" token="6004e88" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="51" coveredRatio="0.13725490196078433"/>
+</method>
+<method name="System.Windows.Forms.Layout.IArrangedElement.get_Children" type="System.Windows.Forms.Control" token="6000876" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="get_Count" type="System.Windows.Forms.Layout.ArrangedElementCollection" token="6000a06" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="get_InnerList" type="System.Windows.Forms.Layout.ArrangedElementCollection" token="60009f7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="OnClientSizeChanged" type="System.Windows.Forms.Control" token="60007f0" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="set_TabIndex" type="System.Windows.Forms.Control" token="6000713" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="11" coveredRatio="0.36363636363636365"/>
+</method>
+<method name="OnTabIndexChanged" type="System.Windows.Forms.Control" token="60007e9" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="set_Text" type="System.Windows.Forms.ButtonBase" token="600114d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_Text" type="System.Windows.Forms.Control" token="600071e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="18" total="22" coveredRatio="0.81818181818181823"/>
+</method>
+<method name="get_Text" type="System.Windows.Forms.ButtonBase" token="600114c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_WindowText" type="System.Windows.Forms.Control" token="6000733" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="15" coveredRatio="0.6"/>
+</method>
+<method name="OnTextChanged" type="System.Windows.Forms.Button" token="60011a2" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="OnTextChanged" type="System.Windows.Forms.ButtonBase" token="6001167" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="8" coveredRatio="1"/>
+</method>
+<method name="get_AutoSize" type="System.Windows.Forms.ButtonBase" token="600112d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="OnTextChanged" type="System.Windows.Forms.Control" token="60007eb" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="Dispose" type="System.Windows.Forms.Layout.NullLayoutTransaction" token="6006d2f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_IsMnemonicsListenerAxSourced" type="System.Windows.Forms.ButtonBase" token="6001149" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_UseVisualStyleBackColor" type="System.Windows.Forms.ButtonBase" token="6001171" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="add_Click" type="System.Windows.Forms.Control" token="6000734" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Drawing.Font" token="6000656" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="IsVerticalName" type="System.Drawing.Font" token="6000687" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="4" coveredRatio="0.75"/>
+</method>
+<method name="Initialize" type="System.Drawing.Font" token="6000682" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="5" coveredRatio="1"/>
+</method>
+<method name="StripVerticalName" type="System.Drawing.Font" token="6000688" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="6" coveredRatio="0.66666666666666663"/>
+</method>
+<method name=".ctor" type="System.Drawing.FontFamily" token="60006a5" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="set_Font" type="System.Windows.Forms.RichTextBox" token="6003cbd" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="25" coveredRatio="0.16"/>
+</method>
+<method name="set_Font" type="System.Windows.Forms.Control" token="60006c9" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="26" total="37" coveredRatio="0.70270270270270274"/>
+</method>
+<method name="Equals" type="System.Drawing.Font" token="600066f" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="14" total="24" coveredRatio="0.58333333333333337"/>
+</method>
+<method name="Equals" type="System.Drawing.FontFamily" token="6000693" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="8" coveredRatio="0.75"/>
+</method>
+<method name="DisposeFontHandle" type="System.Windows.Forms.Control" token="60008f1" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="10" coveredRatio="0.4"/>
+</method>
+<method name="ContainsInteger" type="System.Windows.Forms.PropertyStore" token="6003c0b" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="OnFontChanged" type="System.Windows.Forms.TextBoxBase" token="6001cdd" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="OnFontChanged" type="System.Windows.Forms.Control" token="60007d8" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="22" total="32" coveredRatio="0.6875"/>
+</method>
+<method name="ResumeLayout" type="System.Windows.Forms.Control" token="6000845" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="18" total="26" coveredRatio="0.69230769230769229"/>
+</method>
+<method name="OnLayoutResuming" type="System.Windows.Forms.Control" token="6000807" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="5" coveredRatio="0.6"/>
+</method>
+<method name="SetBoundsCore" type="System.Windows.Forms.TextBoxBase" token="6001cf0" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="12" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="get_WordWrap" type="System.Windows.Forms.TextBoxBase" token="6001ccb" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_Text" type="System.Windows.Forms.RichTextBox" token="6003cef" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="13" coveredRatio="0.61538461538461542"/>
+</method>
+<method name="set_RightToLeft" type="System.Windows.Forms.Control" token="6000708" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="17" total="20" coveredRatio="0.85"/>
+</method>
+<method name="IsEnumValid" type="System.Windows.Forms.ClientUtils" token="6000004" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="3" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="ProcessSuspendedLayoutEventArgs" type="System.Windows.Forms.Layout.LayoutEngine" token="600170e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="OnRightToLeftChanged" type="System.Windows.Forms.RichTextBox" token="6003d20" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="5" coveredRatio="1"/>
+</method>
+<method name="OnRightToLeftChanged" type="System.Windows.Forms.Control" token="60007da" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="11" total="18" coveredRatio="0.61111111111111116"/>
+</method>
+<method name="get_WindowText" type="System.Windows.Forms.TextBoxBase" token="6001cc9" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="ForceWindowText" type="System.Windows.Forms.TextBoxBase" token="6001cf8" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="10" total="15" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="PerformLayout" type="System.Windows.Forms.Control" token="6000825" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="6" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="set_FormattingEnabled" type="System.Windows.Forms.ListControl" token="6001216" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="RefreshItems" type="System.Windows.Forms.ListBox" token="60012b0" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="12" total="39" coveredRatio="0.30769230769230771"/>
+</method>
+<method name="get_DataManager" type="System.Windows.Forms.ListControl" token="6001206" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_SelectionMode" type="System.Windows.Forms.ListBox" token="6001276" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="OnFormattingEnabledChanged" type="System.Windows.Forms.ListControl" token="600122e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="SetBoundsCore" type="System.Windows.Forms.ListBox" token="60012b5" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="6" coveredRatio="1"/>
+</method>
+<method name="OnResize" type="System.Windows.Forms.ListBox" token="60012aa" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="7" coveredRatio="0.8571428571428571"/>
+</method>
+<method name="get_HorizontalScrollbar" type="System.Windows.Forms.ListBox" token="600125f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="add_Click" type="System.Windows.Forms.ListBox" token="6001284" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_AutoSize" type="System.Windows.Forms.Label" token="6003110" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="5" coveredRatio="1"/>
+</method>
+<method name="set_AutoSize" type="System.Windows.Forms.Control" token="600066e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="16" coveredRatio="0.4375"/>
+</method>
+<method name="SetAutoSize" type="System.Windows.Forms.Layout.CommonProperties" token="6004e59" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="9" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="AdjustSize" type="System.Windows.Forms.Label" token="600316f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="17" coveredRatio="0.17647058823529413"/>
+</method>
+<method name="get_SelfSizing" type="System.Windows.Forms.Label" token="600316e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="ShouldSelfSize" type="System.Windows.Forms.Layout.CommonProperties" token="6004e69" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="11" coveredRatio="0.45454545454545453"/>
+</method>
+<method name="SetBoundsCore" type="System.Windows.Forms.Label" token="6003168" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="10" total="14" coveredRatio="0.7142857142857143"/>
+</method>
+<method name="set_Text" type="System.Windows.Forms.Label" token="6003146" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_Text" type="System.Windows.Forms.Label" token="6003145" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="OnTextChanged" type="System.Windows.Forms.Label" token="600315d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="11" total="11" coveredRatio="1"/>
+</method>
+<method name="get_MeasureTextCache" type="System.Windows.Forms.Label" token="600316d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Layout.LayoutUtils+MeasureTextCache" token="6004ec9" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="InvalidateCache" type="System.Windows.Forms.Layout.LayoutUtils+MeasureTextCache" token="6004ec5" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_IsMnemonicsListenerAxSourced" type="System.Windows.Forms.Label" token="6003157" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Drawing.SizeF" token="6000b5f" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_AutoScaleDimensions" type="System.Windows.Forms.ContainerControl" token="6000aab" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="11" coveredRatio="0.72727272727272729"/>
+</method>
+<method name="get_Width" type="System.Drawing.SizeF" token="6000b66" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_Height" type="System.Drawing.SizeF" token="6000b68" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_IsEmpty" type="System.Drawing.SizeF" token="6000b65" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="3" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="LayoutScalingNeeded" type="System.Windows.Forms.ContainerControl" token="6000ae5" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="6" coveredRatio="0.83333333333333337"/>
+</method>
+<method name="EnableRequiredScaling" type="System.Windows.Forms.ContainerControl" token="6000ae2" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="11" coveredRatio="0.72727272727272729"/>
+</method>
+<method name="get_Controls" type="System.Windows.Forms.Control" token="60006a8" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="7" coveredRatio="1"/>
+</method>
+<method name="CreateControlsInstance" type="System.Windows.Forms.Form" token="6002d34" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Form+ControlCollection" token="6002ded" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Control+ControlCollection" token="6000a10" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Layout.ArrangedElementCollection" token="60009f6" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="GetEnumerator" type="System.Windows.Forms.Control+ControlCollection" token="6000a18" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.Control+ControlCollection+ControlCollectionEnumerator" token="6000a29" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="MoveNext" type="System.Windows.Forms.Control+ControlCollection+ControlCollectionEnumerator" token="6000a2a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="5" coveredRatio="0.6"/>
+</method>
+<method name="get_IsLayoutSuspended" type="System.Windows.Forms.Control" token="60008f7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_AutoScaleMode" type="System.Windows.Forms.ContainerControl" token="6000aae" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="13" coveredRatio="0.69230769230769229"/>
+</method>
+<method name="OnAutoScaleModeChanged" type="System.Windows.Forms.Form" token="6002d43" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="5" coveredRatio="1"/>
+</method>
+<method name="OnAutoScaleModeChanged" type="System.Windows.Forms.ContainerControl" token="6000ac1" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_AutoScale" type="System.Windows.Forms.Form" token="6002c96" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="8" coveredRatio="0.625"/>
+</method>
+<method name="set_ClientSize" type="System.Windows.Forms.Form" token="6002cac" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_ClientSize" type="System.Windows.Forms.Control" token="600069b" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="SetClientSizeCore" type="System.Windows.Forms.Form" token="6002d73" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="26" coveredRatio="0.26923076923076922"/>
+</method>
+<method name="SetClientSizeCore" type="System.Windows.Forms.Control" token="6000853" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="SizeFromClientSize" type="System.Windows.Forms.Control" token="6000968" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="8" total="8" coveredRatio="1"/>
+</method>
+<method name=".ctor" type="System.Windows.Forms.NativeMethods+RECT" token="600382d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="FillInCreateParamsStartPosition" type="System.Windows.Forms.Form" token="6002dae" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="80" coveredRatio="0.1125"/>
+</method>
+<method name="get_HasMenu" type="System.Windows.Forms.Form" token="6002cb8" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="8" coveredRatio="0.625"/>
+</method>
+<method name="get_Menu" type="System.Windows.Forms.Form" token="6002cd5" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="get_Size" type="System.Windows.Forms.NativeMethods+RECT" token="6003830" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="SetBoundsCore" type="System.Windows.Forms.Form" token="6002d71" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="32" total="71" coveredRatio="0.45070422535211269"/>
+</method>
+<method name="get_WindowState" type="System.Windows.Forms.Form" token="6002d0d" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="set_Width" type="System.Drawing.Rectangle" token="6000479" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="set_Height" type="System.Drawing.Rectangle" token="600047b" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_MaxWindowTrackSize" type="System.Windows.Forms.SystemInformation" token="6004025" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="get_MinWindowTrackSize" type="System.Windows.Forms.SystemInformation" token="6004013" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="ApplyBoundsConstraints" type="System.Windows.Forms.Form" token="6002d72" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="36" coveredRatio="0.11111111111111111"/>
+</method>
+<method name="get_MaximumSize" type="System.Windows.Forms.Form" token="6002ccb" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="10" coveredRatio="0.4"/>
+</method>
+<method name="get_MinimumSize" type="System.Windows.Forms.Form" token="6002cd7" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="11" coveredRatio="0.45454545454545453"/>
+</method>
+<method name="OnResize" type="System.Windows.Forms.Form" token="6002d5e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="5" coveredRatio="0.8"/>
+</method>
+<method name="Add" type="System.Windows.Forms.Form+ControlCollection" token="6002dee" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="26" coveredRatio="0.11538461538461539"/>
+</method>
+<method name="Add" type="System.Windows.Forms.Control+ControlCollection" token="6000a12" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="15" total="46" coveredRatio="0.32608695652173914"/>
+</method>
+<method name="CheckParentingCycle" type="System.Windows.Forms.Control" token="6000916" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="14" total="22" coveredRatio="0.63636363636363635"/>
+</method>
+<method name="get_OwnerInternal" type="System.Windows.Forms.Form" token="6002da1" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="3" total="3" coveredRatio="1"/>
+</method>
+<method name="AssignParent" type="System.Windows.Forms.Control" token="600078f" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="28" total="56" coveredRatio="0.5"/>
+</method>
+<method name="get_RequiredScalingEnabled" type="System.Windows.Forms.Control" token="6000903" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_CanAccessProperties" type="System.Windows.Forms.Control" token="600068c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="1" total="1" coveredRatio="1"/>
+</method>
+<method name="get_ForeColor" type="System.Windows.Forms.RichTextBox" token="6003cba" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_ForeColor" type="System.Windows.Forms.TextBoxBase" token="6001c9e" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="6" coveredRatio="0.66666666666666663"/>
+</method>
+<method name="ShouldSerializeForeColor" type="System.Windows.Forms.Control" token="600085c" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="get_WindowText" type="System.Drawing.SystemColors" token="6000547" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_BackColor" type="System.Windows.Forms.TextBoxBase" token="6001c82" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="6" total="10" coveredRatio="0.6"/>
+</method>
+<method name="ShouldSerializeBackColor" type="System.Windows.Forms.Control" token="600085a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="4" total="4" coveredRatio="1"/>
+</method>
+<method name="get_ReadOnly" type="System.Windows.Forms.TextBoxBase" token="6001cb9" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_Window" type="System.Drawing.SystemColors" token="6000545" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="get_Visible" type="System.Windows.Forms.Control" token="600072a" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="2" total="2" coveredRatio="1"/>
+</method>
+<method name="GetVisibleCore" type="System.Windows.Forms.Control" token="60007b2" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="9" total="9" coveredRatio="1"/>
+</method>
+<method name="OnParentChanged" type="System.Windows.Forms.Control" token="60007ee" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="9" coveredRatio="0.77777777777777779"/>
+</method>
+<method name="get_TopMostParent" type="System.Windows.Forms.Control" token="6000907" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="5" total="5" coveredRatio="1"/>
+</method>
+<method name="OnVisibleChanged" type="System.Windows.Forms.Control" token="60007ec" module="System.Windows.Forms.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="11" total="28" coveredRatio="0.39285714285714285"/>
+</method>
+<method name="Equals" type="System.Drawing.Color" token="60001ef" module="System.Drawing.dll"><hits/>
+<coverage domain="userortestcode" unit="block" covered="7" total="13" coveredRatio="0.53846153846153844"/>
+</method>
+</document>
+</documents>

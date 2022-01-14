@@ -1,0 +1,42 @@
+C:\Users\hamid\AppData\Local\Temporary Projects\WindowsFormsApplication1\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\hamid\AppData\Local\Temporary Projects\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\hamid\AppData\Local\Temporary Projects\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\hamid\AppData\Local\Temporary Projects\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\hamid\AppData\Local\Temporary Projects\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\hamid\AppData\Local\Temporary Projects\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\hamid\AppData\Local\Temporary Projects\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\hamid\AppData\Local\Temporary Projects\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\hamid\Desktop\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\hamid\Desktop\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\hamid\Desktop\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\hamid\Desktop\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\hamid\Desktop\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\hamid\Desktop\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\hamid\Desktop\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\hamid\Desktop\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
+D:\WINDOWS 2012\BACK up 11\easy tranlate\easy translator\better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+D:\WINDOWS 2012\BACK up 11\easy tranlate\easy translator\better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+D:\WINDOWS 2012\BACK up 11\easy tranlate\easy translator\better gui\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+D:\WINDOWS 2012\BACK up 11\easy tranlate\easy translator\better gui\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+D:\WINDOWS 2012\BACK up 11\easy tranlate\easy translator\better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+D:\WINDOWS 2012\BACK up 11\easy tranlate\easy translator\better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+D:\WINDOWS 2012\BACK up 11\easy tranlate\easy translator\better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
+D:\WINDOWS 2012\BACK up 11\easy tranlate\easy translator\better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojResolveAssemblyReference.cache
+D:\deletable HDD backups\Ccandidates to resume 1399-4\easy transalte\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+D:\deletable HDD backups\Ccandidates to resume 1399-4\easy transalte\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+D:\deletable HDD backups\selected (cutted) candidates to resume 1400-1\easy transalte\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+D:\deletable HDD backups\selected (cutted) candidates to resume 1400-1\easy transalte\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+D:\deletable HDD backups\selected (cutted) candidates to resume 1400-1\easy transalte\v2 better gui\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+D:\deletable HDD backups\selected (cutted) candidates to resume 1400-1\easy transalte\v2 better gui\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+D:\deletable HDD backups\selected (cutted) candidates to resume 1400-1\easy transalte\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojResolveAssemblyReference.cache
+D:\deletable HDD backups\selected (cutted) candidates to resume 1400-1\easy transalte\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+D:\deletable HDD backups\selected (cutted) candidates to resume 1400-1\easy transalte\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+D:\deletable HDD backups\selected (cutted) candidates to resume 1400-1\easy transalte\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\lenovo\Desktop\deletale project\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\lenovo\Desktop\deletale project\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\lenovo\Desktop\deletale project\v2 better gui\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\lenovo\Desktop\deletale project\v2 better gui\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\lenovo\Desktop\deletale project\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojResolveAssemblyReference.cache
+C:\Users\lenovo\Desktop\deletale project\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\lenovo\Desktop\deletale project\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\lenovo\Desktop\deletale project\v2 better gui\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
